@@ -41,7 +41,7 @@ def create_app(flask_config_name=None):
 
     from app.model.NumberplateModel import Numberplate
 
-    #тестовые данные
+    #test
     one = Numberplate('1', '0', 'a100aa178')
     two = Numberplate('2', '0', 'b200bb178')
     daoPool.sqlDAO.session.add(one)

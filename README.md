@@ -10,10 +10,10 @@
 
 
 ### Запись:
-- Принимает три аргумента CamID, Timestamp, Licplates
+- /send Принимает три аргумента CamID, Timestamp, Licplates
 
 
-#### Пример:
+##### Пример:
 ```
 var xhttp = new XMLHttpRequest();
 xhttp.open("POST", "http://127.0.0.1:5000/send", true);

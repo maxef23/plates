@@ -41,16 +41,6 @@ def create_app(flask_config_name=None):
 
     from app.model.NumberplateModel import Numberplate
 
-    #test
-    one = Numberplate('1', '0', 'a100aa178')
-    two = Numberplate('2', '0', 'b200bb178')
-    daoPool.sqlDAO.session.add(one)
-    daoPool.sqlDAO.session.add(two)
-    daoPool.sqlDAO.session.commit()
-
-
-    
-
     @app.route('/get', methods=['GET'])
     def get():
         list = []
@@ -63,11 +53,11 @@ def create_app(flask_config_name=None):
 
     @app.route('/get/<int:id>', methods=['GET'])
     def get_by_id(id):
-        plate = Numberplate.query.get(id)
-        if plate is not None:
-            return jsonify(id=plate.id, CamID=plate.CamID, Timestamp=plate.Timestamp, Licplates=plate.Licplates)
-        else:     
-            return 'No such id'
+        list = []
+        plates = Numberplate.query.filter(Numberplate.id>=id)
+        for plate in plates:
+            list.append({'id' : plate.id, 'CamID' : plate.CamID, 'Timestamp' : plate.Timestamp, 'Licplates' : plate.Licplates})
+        return jsonify(list)
         
 
 

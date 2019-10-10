@@ -4,10 +4,56 @@
 
  
 ### Чтение:
-- Всех номеров сразу /get. В ответ приходит json со всеми записями таблицы Numberplate
+- /get. В ответ приходит json со всеми строками таблицы Numberplate
 
-- Номера по id /get/<int:id>. В ответ приходит json c требуемым id
+##### Пример:
+```
+/get
 
+[
+  {
+    "CamID": 1, 
+    "Licplates": "H272YM161", 
+    "Timestamp": "0", 
+    "id": 1
+  }, 
+  {
+    "CamID": 1, 
+    "Licplates": "C008BC161", 
+    "Timestamp": "0", 
+    "id": 2
+  }, 
+  {
+    "CamID": 1, 
+    "Licplates": "C008BC161", 
+    "Timestamp": "0", 
+    "id": 3
+  }
+]
+```
+
+
+- /get/<int:id>. В ответ приходит json cо строками у которых ID больше или равен id
+
+##### Пример:
+```
+/get/2
+
+[
+  {
+    "CamID": 1, 
+    "Licplates": "C008BC161", 
+    "Timestamp": "0", 
+    "id": 2
+  }, 
+  {
+    "CamID": 1, 
+    "Licplates": "C008BC161", 
+    "Timestamp": "0", 
+    "id": 3
+  }
+]
+```
 
 ### Запись:
 - /send Принимает три аргумента CamID, Timestamp, Licplates

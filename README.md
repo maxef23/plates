@@ -1,7 +1,18 @@
 # plates
 
-Запись и чтение из базы госномеров
+#Синявино
 
+## Тестовые сервер развернут по url http://3.124.81.206:5000
+
+### Авторизация:
+
+- /login. В запрос входит два параметра: логин и пароль. Сейчас создан тестовый пользователь с логином: admin и паролем: admin. В ответ приходит json с уникальным токеном пользователя. В последующем все запросы к базе должны иметь этот token в качестве аргумента.
+
+```
+{
+  "token": "eyJhbGciOiJIUzUxMiIsImlhdCI6MTU3MTE2MjU1NCwiZXhwIjoxNTcxMTcyNTU0fQ.eyJpZCI6MTF9.lAU7dZkII6g3AY81cWDrFlDNCNc_IPQbCeIMR6UlJkozjC5VkOO0enrBW39sI6hEa5GYuatqFgZgaQN28JDnkg"
+}
+```
  
 ### Чтение:
 - /get. В ответ приходит json со всеми строками таблицы Numberplate
@@ -56,13 +67,21 @@
 ```
 
 ### Запись:
-- /send Принимает три аргумента CamID, Timestamp, Licplates
+- /send. Принимает три аргумента CamID, Timestamp, Licplates
 
 
 ##### Пример:
 ```
 var xhttp = new XMLHttpRequest();
-xhttp.open("POST", "http://127.0.0.1:5000/send", true);
+xhttp.open("POST", "http://127.0.0.1:5000/send?token=...", true);
 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhttp.send("CamID=3&Timestamp=0&Licplates=c777cc198");
 ```
+
+### Удаление:
+- /delete. Принимает аргумент id сущности в таблице numberplate и удаляет его
+
+
+### Статистика по номеру:
+- /getstat_by_plate. Принимает аргумент plate госномера машины и возвращает все записи в базе с таким номером.
+

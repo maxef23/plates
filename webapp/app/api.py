@@ -30,12 +30,12 @@ def login():
         return jsonify({'token': current_user.generate_auth_token().decode('utf-8')})
 
 @app.route('/get', methods=['GET'])
-# @login_required
+@login_required
 def get():
     return create_json(Numberplate.query.all())
 
 @app.route('/send', methods=['POST'])
-# @login_required
+@login_required
 def send(CamID = None, Timestamp = None, Licplates = None):
     if (Timestamp or request.form['Timestamp']):
         time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
@@ -51,12 +51,12 @@ def send(CamID = None, Timestamp = None, Licplates = None):
 
 
 @app.route('/get/<int:id>', methods=['GET'])
-# @login_required
+@login_required
 def get_by_id(id):
     return create_json(Numberplate.query.filter(Numberplate.id>=id))
 
 @app.route('/delete', methods=['POST'])
-# @login_required
+@login_required
 def delete_by_id(id=None):
     if (id is not None):
         Numberplate.query.filter_by(id=id).delete()
@@ -66,7 +66,7 @@ def delete_by_id(id=None):
     return 'Delete'
 
 @app.route('/getstat_by_plate', methods=['GET'])
-# @login_required
+@login_required
 def getstat_by_plate(plate=None):
     if (plate is not None):
         plates = Numberplate.query.filter(Numberplate.Licplates==plate)

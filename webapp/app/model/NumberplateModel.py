@@ -1,6 +1,7 @@
 from app.dao import daoPool
 
 db = daoPool.sqlDAO
+from app import app
 
 class Numberplate(db.Model):
     id = db.Column(db.Integer, primary_key=True)

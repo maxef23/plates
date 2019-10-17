@@ -15,7 +15,7 @@ class DaoPool():
         self.sqlDAO = SQLAlchemy(app)
         init_model(self.sqlDAO)
 
-        self.esDAO = ElasticsearchDAO(app.config['ELASTICSEARCH_HOST'], \
-                                        app.config['ELASTICSEARCH_PORT'])
+        self.esDAO = ElasticsearchDAO('', \
+                                        '9200')
 
 daoPool = DaoPool()

@@ -1,9 +1,17 @@
 #!flask/bin/python
-from app import create_app
 import os
+from flask import Flask
 
-app = create_app()
+from app import app
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
+
+
+
+
+
+
+
+
 

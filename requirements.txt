@@ -1,7 +1,7 @@
 coverage==4.3.4
 elasticsearch==5.2.0
 elasticsearch-dsl==5.1.0
-Flask==0.12
+Flask==1.0
 Flask-Cors==3.0.2
 Flask-OAuth==0.12
 flask-restplus==0.10.0

@@ -19,7 +19,7 @@ class ElasticsearchDAO():
         url = "%s:%s" % (host, port)
         try:
             self.client = Elasticsearch([url], send_get_body_as="POST")
-        except:
+        except :
             logger.error('elasticsearch cannot connect')
 
     def setIndexAndType(self, index, type):

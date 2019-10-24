@@ -1,3 +1,5 @@
+from app import app
+
 from functools import wraps
 from itsdangerous import BadSignature, SignatureExpired, TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
@@ -39,7 +41,7 @@ def get_user_by_token(token):
     try:
         data = s.loads(token)
         user_id = data['id']
-        user = User.query.filter_by(id=user_id)
+        user = User.query.filter_by(id=user_id).first()
         if user is None:
             raise BadRequest(message='Не найден пользователь [id={}]'.format(user_id), status_code=401)
         return user
@@ -57,7 +59,8 @@ def login_required(func):
         try:
             token = request.args.get('token', None)
             user = get_user_by_token(token)
-            return func(user)
+            # return func(user)
+            return func()
         except BadRequest as e:
             return Response(e.message, status=e.status_code)
 

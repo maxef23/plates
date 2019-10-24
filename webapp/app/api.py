@@ -1,5 +1,5 @@
 from app import app, db
-from app import utils
+from app.utils import get_user_id_by_token, get_user_by_token, login_required
 
 from flask import jsonify
 from flask import Response, request
@@ -7,10 +7,9 @@ from flask import Response, request
 import datetime
 import locale
 
-locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
-
 from app.model.NumberplateModel import Numberplate
 from app.model.UserModel import User
+from app.dao import daoPool
 
 
 def create_json(array):
@@ -29,31 +28,33 @@ def login():
     else:
         return jsonify({'token': current_user.generate_auth_token().decode('utf-8')})
 
-@app.route('/get', methods=['GET'])
+
+@app.route('/get', methods=['GET', 'POST'])
 @login_required
 def get():
-    return create_json(Numberplate.query.all())
+    if (request.method == 'GET'):
+        return create_json(Numberplate.query.all())
+    if (request.method == 'POST'):
+        if (request.form['id'] is not None):
+            return create_json(Numberplate.query.filter(Numberplate.id>=request.form['id']))
+
 
 @app.route('/send', methods=['POST'])
 @login_required
 def send(CamID = None, Timestamp = None, Licplates = None):
-    if (Timestamp or request.form['Timestamp']):
-        time = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
     if (request):
-        plate = Numberplate(request.form['CamID'], time, request.form['Licplates'])
+        last = Numberplate.query.order_by(Numberplate.id.desc()).first()
+        if (last.Licplates == request.form['Licplates'] and int(last.CamID) == int(request.form['CamID'])):
+            return Response('Duplicate plate', status=400)
+        plate = Numberplate(request.form['CamID'], request.form['Timestamp'], request.form['Licplates'])
     elif (CamID is not None and Timestamp is not None and Licplates is not None):
-        plate = Numberplate(CamID, time, Licplates)
+        plate = Numberplate(CamID, Timestamp, Licplates)
     else:
         return '';
     daoPool.sqlDAO.session.add(plate)
     daoPool.sqlDAO.session.commit()
     return 'Send'
 
-
-@app.route('/get/<int:id>', methods=['GET'])
-@login_required
-def get_by_id(id):
-    return create_json(Numberplate.query.filter(Numberplate.id>=id))
 
 @app.route('/delete', methods=['POST'])
 @login_required
@@ -65,7 +66,7 @@ def delete_by_id(id=None):
     daoPool.sqlDAO.session.commit()
     return 'Delete'
 
-@app.route('/getstat_by_plate', methods=['GET'])
+@app.route('/getstat_by_plate', methods=['POST'])
 @login_required
 def getstat_by_plate(plate=None):
     if (plate is not None):
@@ -74,16 +75,14 @@ def getstat_by_plate(plate=None):
         plates = Numberplate.query.filter(Numberplate.Licplates==request.form['plate'])
     return create_json(plates)
 
-
-# подсчет номеров
-# @app.route('/count_plates', methods=['GET'])
-# @login_required
-# def count_plates(begin=None, end=None):
-#     if (begin is not None and end is not None):
-#         plates = Numberplate.query.filter(Numberplate.Timestamp>=begin and Numberplate.Timestamp>=end)
-#         print(plates)
-#     elif (request.form['begin'] and request.form['begin']):
-#         plates = Numberplate.query.filter(Numberplate.Timestamp>=request.form['begin'])
-#         print(plates)
-#     return create_json(plates)
+@app.route('/count_plates', methods=['POST'])
+@login_required
+def count_plates(begin=None, end=None):
+    if (begin is not None and end is not None):
+        plates = Numberplate.query.filter_by(Numberplate.Timestamp>=begin, Numberplate.Timestamp<=end)
+        print(plates)
+    elif (request.form['begin'] and request.form['end']):
+        plates = Numberplate.query.filter(Numberplate.Timestamp>=request.form['begin'], Numberplate.Timestamp<=request.form['end'])
+        print(plates)
+    return create_json(plates)
 

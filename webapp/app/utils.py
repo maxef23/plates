@@ -59,8 +59,8 @@ def login_required(func):
         try:
             token = request.args.get('token', None)
             user = get_user_by_token(token)
-            # return func(user)
-            return func()
+            return func(user)
+            # return func()
         except BadRequest as e:
             return Response(e.message, status=e.status_code)
 

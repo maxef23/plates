@@ -8,10 +8,19 @@
 
 ##### Пример:
 ```
-var xhttp = new XMLHttpRequest();
-xhttp.open("POST", "/login", true);
-xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhttp.send("login=admin&password=admin");
+  axios({
+    method: 'post',
+    url: '/login',
+    data : {
+      login : "admin",
+      password : "admin"
+    },
+    headers: {
+        "Content-type" : "application/json",
+        'Access-Control-Allow-Origin': '*'
+        
+      }
+  });
 ```
 
 ##### Ответ:
@@ -33,10 +42,15 @@ xhttp.send("login=admin&password=admin");
 
 ##### Пример 1:
 ```
-var xhttp = new XMLHttpRequest();
-xhttp.open("GET", "/get?token=", true);
-xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhttp.send();
+  axios({
+    method: 'get',
+    url: '/get' + "?token=" + token,
+    headers: {
+        "Content-type" : "application/json",
+        'Access-Control-Allow-Origin': '*'
+        
+      }
+  });
 ```
 
 ##### Ответ:
@@ -66,10 +80,18 @@ xhttp.send();
 
 ##### Пример 2:
 ```
-var xhttp = new XMLHttpRequest();
-xhttp.open("POST", "/get?token=", true);
-xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhttp.send('id=100');
+  axios({
+    method: 'post',
+    url: '/get' + "?token=" + token,
+    data : {
+      id : 10
+    },
+    headers: {
+        "Content-type" : "application/json",
+        'Access-Control-Allow-Origin': '*'
+        
+      }
+  });
 ```
 
 ##### Ответ:
@@ -124,10 +146,18 @@ xhttp.send("CamID=3&Timestamp=0&Licplates=c777cc198");
 
 ##### Пример:
 ```
-var xhttp = new XMLHttpRequest();
-xhttp.open("POST", "/delete?token=", true);
-xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhttp.send('id=100');
+  axios({
+    method: 'post',
+    url: '/delete' + "?token=" + token,
+    data : {
+      id : 5
+    },
+    headers: {
+        "Content-type" : "application/json",
+        'Access-Control-Allow-Origin': '*'
+        
+      }
+  });
 ```
 
 
@@ -138,10 +168,18 @@ xhttp.send('id=100');
 
 ##### Пример:
 ```
-var xhttp = new XMLHttpRequest();
-xhttp.open("POST", "/getstat_by_plate?token=", true);
-xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhttp.send('plate=b999aa198');
+  axios({
+    method: 'post',
+    url: '/getstat_by_plate' + "?token=" + token,
+    data : {
+      plate : "c777cc198"
+    },
+    headers: {
+        "Content-type" : "application/json",
+        'Access-Control-Allow-Origin': '*'
+        
+      }
+  });
 ```
 
 
@@ -170,10 +208,19 @@ xhttp.send('plate=b999aa198');
 
 ##### Пример:
 ```
-var xhttp = new XMLHttpRequest();
-xhttp.open("POST", "/count_plates?token=", true);
-xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xhttp.send("begin=1571935880&end=1571935895");
+  axios({
+    method: 'post',
+    url: '/count_plates' + "?token=" + token,
+    data : {
+      begin : 1571935875935,
+      end : 1571935899998
+    },
+    headers: {
+        "Content-type" : "application/json",
+        'Access-Control-Allow-Origin': '*'
+        
+      }
+  });
 ```
 
 ##### Ответ:

@@ -78,6 +78,5 @@ def count_plates(current_user):
     data = request.get_json()
     if (data['begin'] and data['end']):
         plates = Numberplate.query.filter(Numberplate.Timestamp>=data['begin'], Numberplate.Timestamp<=data['end'])
-        print(plates)
     return create_json(plates)
 
